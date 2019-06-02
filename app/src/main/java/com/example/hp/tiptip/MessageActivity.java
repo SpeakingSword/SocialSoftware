@@ -8,7 +8,7 @@ import android.view.View;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
 
-public class Message extends AppCompatActivity {
+public class MessageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class Message extends AppCompatActivity {
 
     private void doLogout(){
         NIMClient.getService(AuthService.class).logout();
-        startActivity(new Intent(Message.this,Login.class));
+        startActivity(new Intent(MessageActivity.this,LoginActivity.class));
         finish();
     }
 }

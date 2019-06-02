@@ -43,7 +43,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Welcome"
+            android:name=".WelcomeActivity"
             android:theme="@style/welcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Login"
+            android:name=".LoginActivity"
             android:theme="@style/loginActivity" />
 
         <!--
@@ -107,7 +107,7 @@
             android:exported="false"
             android:process=":core" />
 
-        <activity android:name=".Message"></activity>
+        <activity android:name=".MessageActivity"></activity>
     </application>
 
 </manifest>
