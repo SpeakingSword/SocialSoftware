@@ -107,7 +107,6 @@
             android:exported="false"
             android:process=":core" />
 
-        <activity android:name=".MessageActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"></activity>

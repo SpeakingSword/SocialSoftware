@@ -54,10 +54,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginCheck(View v){
+        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+        finish();
         //doIMLogin(username.getText().toString(),password.getText().toString());
-        doServerLogin(loginUrl);
-
-
+        //doServerLogin(loginUrl);
     }
 
     private void doServerLogin(String url){
@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                 new RequestCallback<LoginInfo>() {
                     @Override
                     public void onSuccess(LoginInfo param) {
-                        Intent intent = new Intent(LoginActivity.this,MessageActivity.class);
+                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                         startActivity(intent);
                         finish();
                     }
