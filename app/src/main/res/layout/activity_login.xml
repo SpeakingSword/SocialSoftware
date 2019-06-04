@@ -5,8 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+    <LinearLayout
+        android:layout_width="320dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
@@ -19,7 +23,7 @@
             />
 
         <EditText
-            android:id="@+id/loginUsername"
+            android:id="@+id/loginUserId"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:hint="输入账号"
@@ -30,7 +34,7 @@
             android:inputType="textPersonName"
             />
         <EditText
-            android:id="@+id/loginPassword"
+            android:id="@+id/loginUserPassword"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
@@ -49,8 +53,19 @@
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
             />
+        <Button
+            android:id="@+id/registerBtn"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:text="注册"
+            android:onClick="goToRegister"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            />
 
 
     </LinearLayout>
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

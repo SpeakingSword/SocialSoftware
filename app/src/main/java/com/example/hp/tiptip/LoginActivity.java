@@ -31,11 +31,11 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText username;
-    private EditText password;
+    private EditText userId;
+    private EditText userPassword;
     private ImageView loginIcon;
-    private String loginUrl = "http://192.168.3.2:8080/TipTip/loginAction";
-    private String loginIconUrl = "http://192.168.3.2:8081/avatar.png";
+    private String loginUrl = "http://10.0.2.2:8080/TipTip/loginAction";
+    private String loginIconUrl = "http://10.0.2.2:8081/avatar.png";
    /* private Handler handler = new Handler(){
         public void handleMessage(Message msg) {
             Bitmap bitmap = (Bitmap)msg.obj;
@@ -47,17 +47,23 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginIcon = findViewById(R.id.loginIcon);
-        username = findViewById(R.id.loginUsername);
-        password = findViewById(R.id.loginPassword);
+        //loginIcon = findViewById(R.id.loginIcon);
+        initEditText();
         //setImageView(loginIconUrl);
     }
 
+    private void initEditText(){
+        userId = findViewById(R.id.loginUserId);
+        userPassword = findViewById(R.id.loginUserPassword);
+    }
+
     public void loginCheck(View v){
-        startActivity(new Intent(LoginActivity.this,MainActivity.class));
-        finish();
         //doIMLogin(username.getText().toString(),password.getText().toString());
-        //doServerLogin(loginUrl);
+        doServerLogin(loginUrl);
+    }
+
+    public void goToRegister(View v){
+        startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
     }
 
     private void doServerLogin(String url){
@@ -65,8 +71,8 @@ public class LoginActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient.Builder().build();
         //创建POST表单，获取username和password
         RequestBody post = new FormBody.Builder()
-                .add("loginName",username.getText().toString())
-                .add("loginPassword",password.getText().toString())
+                .add("userId",userId.getText().toString())
+                .add("userPassword",userPassword.getText().toString())
                 .build();
         //开始请求，填入url和表单
         Request request = new Request.Builder()
