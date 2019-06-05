@@ -109,7 +109,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" />
+            android:label="@string/title_activity_main" android:theme="@style/mainActivity" />
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/registerActivity" />

@@ -14,9 +14,9 @@
         completions."
     </string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">消息</string>
-    <string name="title_dashboard">通讯录</string>
-    <string name="title_notifications">我的</string>
+    <string name="title_message">消息</string>
+    <string name="title_contact">通讯录</string>
+    <string name="title_userInfo">我的</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

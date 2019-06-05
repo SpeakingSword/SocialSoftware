@@ -100,7 +100,9 @@ public class LoginActivity extends AppCompatActivity {
                        switch (responseData){
                            case "loginSuccess" :
                                ACache aCache = ACache.get(LoginActivity.this);
-                               aCache.put("userId",userId.getText().toString());
+                               if (aCache.getAsString("userId") == null){
+                                   aCache.put("userId",userId.getText().toString());
+                               }
                                Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                                startActivity(new Intent(LoginActivity.this,MainActivity.class));
                                finish();

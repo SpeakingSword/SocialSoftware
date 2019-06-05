@@ -12,19 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
-import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.auth.AuthService;
-
-public class MainActivity extends AppCompatActivity implements NotificationFragment.OnFragmentInteractionListener,
-        ContactFragment.OnFragmentInteractionListener,SettingFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements MessageFragment.OnFragmentInteractionListener,
+        ContactFragment.OnFragmentInteractionListener,User_infoFragment.OnFragmentInteractionListener{
 
 
-    private NotificationFragment notificationFragment;
+    private MessageFragment messageFragment;
     private ContactFragment contactFragment;
-    private SettingFragment settingFragment;
+    private User_infoFragment userInfoFragment;
     private Fragment isFrament;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -33,23 +28,23 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    if (notificationFragment == null){
-                        notificationFragment = new NotificationFragment();
+                case R.id.navigation_message:
+                    if (messageFragment == null){
+                        messageFragment = new MessageFragment();
                     }
-                    switchContent(isFrament,notificationFragment);
+                    switchContent(isFrament, messageFragment);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_contact:
                     if (contactFragment == null){
                         contactFragment = new ContactFragment();
                     }
                     switchContent(isFrament,contactFragment);
                     return true;
-                case R.id.navigation_notifications:
-                    if (settingFragment == null){
-                        settingFragment = new SettingFragment();
+                case R.id.navigation_user_info:
+                    if (userInfoFragment == null){
+                        userInfoFragment = new User_infoFragment();
                     }
-                    switchContent(isFrament,settingFragment);
+                    switchContent(isFrament, userInfoFragment);
                     return true;
             }
             return false;
@@ -69,11 +64,11 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
         if(savedInstanceState == null){
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            if (notificationFragment == null){
-                notificationFragment = new NotificationFragment();
+            if (messageFragment == null){
+                messageFragment = new MessageFragment();
             }
-            isFrament = notificationFragment;
-            ft.replace(R.id.container,notificationFragment).commit();
+            isFrament = messageFragment;
+            ft.replace(R.id.container, messageFragment).commit();
         }
     }
 
@@ -116,12 +111,12 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     }
 
     @Override
-    public void onNotificationFragmentInteraction(Uri uri) {
+    public void onMessageFragmentInteraction(Uri uri) {
 
     }
 
     @Override
-    public void onSettingFragmentInteraction(Uri uri) {
+    public void onUser_infoFragmentInteraction(Uri uri) {
 
     }
 }
