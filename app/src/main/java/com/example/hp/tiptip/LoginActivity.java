@@ -99,6 +99,8 @@ public class LoginActivity extends AppCompatActivity {
                        switch (responseData){
                            case "loginSuccess" :
                                Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                               startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                               finish();
                                break;
                            case "wrongCode" :
                                Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
