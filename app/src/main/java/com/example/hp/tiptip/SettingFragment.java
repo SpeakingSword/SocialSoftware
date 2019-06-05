@@ -119,6 +119,8 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //NIMClient.getService(AuthService.class).logout();
+                ACache aCache = ACache.get(getActivity());
+                aCache.remove("userId");
                 startActivity(new Intent(getActivity(),LoginActivity.class));
                 getActivity().finish();
             }

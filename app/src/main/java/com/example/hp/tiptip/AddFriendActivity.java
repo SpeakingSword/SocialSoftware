@@ -27,6 +27,7 @@ public class AddFriendActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
+        initVariables();
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setHomeButtonEnabled(true);
@@ -78,7 +79,7 @@ public class AddFriendActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                final String responseData = response.body().toString();
+                final String responseData = response.body().string();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -88,10 +89,13 @@ public class AddFriendActivity extends AppCompatActivity {
                                  break;
                             case "noSuchId" :
                                 Toast.makeText(AddFriendActivity.this, "用户不存在", Toast.LENGTH_SHORT).show();
+                                break;
                             case "friendExist" :
                                 Toast.makeText(AddFriendActivity.this, "好友已存在", Toast.LENGTH_SHORT).show();
+                                break;
                             case "addFriendFail" :
                                 Toast.makeText(AddFriendActivity.this, "添加失败", Toast.LENGTH_SHORT).show();
+                                break;
                         }
                     }
                 });

@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
                 startActivity(new Intent(MainActivity.this,AddFriendActivity.class));
                 break;
             case R.id.setting :
+                MainActivity.this.finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
