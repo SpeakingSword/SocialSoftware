@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements NotificationFragm
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.addFriend :
+                startActivity(new Intent(MainActivity.this,AddFriendActivity.class));
                 break;
             case R.id.setting :
                 break;

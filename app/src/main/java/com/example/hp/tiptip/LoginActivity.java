@@ -1,6 +1,7 @@
 package com.example.hp.tiptip;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -98,6 +99,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void run() {
                        switch (responseData){
                            case "loginSuccess" :
+                               ACache aCache = ACache.get(LoginActivity.this);
+                               aCache.put("userId",userId.getText().toString());
                                Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                                startActivity(new Intent(LoginActivity.this,MainActivity.class));
                                finish();

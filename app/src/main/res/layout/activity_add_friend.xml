@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddFriendActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <EditText
+            android:layout_marginTop="20dp"
+            android:id="@+id/inputFriendId"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:textSize="15sp"
+            android:hint="@string/inputFriendId"
+            android:textStyle="bold"
+            android:inputType="textPersonName"
+            />
+        <Button
+            android:id="@+id/addFriendBtn"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:text="@string/add"
+            android:textStyle="bold"
+            android:onClick="addFriendCheck"
+            android:textSize="20sp"
+            />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

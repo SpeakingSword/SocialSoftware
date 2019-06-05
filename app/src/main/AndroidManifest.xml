@@ -110,7 +110,10 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" />
-        <activity android:name=".RegisterActivity" android:theme="@style/registerActivity"></activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:theme="@style/registerActivity" />
+        <activity android:name=".AddFriendActivity" android:label="@string/addFriend"></activity>
     </application>
 
 </manifest>

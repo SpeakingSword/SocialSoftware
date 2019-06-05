@@ -124,39 +124,6 @@ public class ContactFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final String url = "http://192.168.3.2:8080/TipTip/addFriendAction";
-        ListView friendList = getActivity().findViewById(R.id.friendList);
-        final EditText friendId = getActivity().findViewById(R.id.friendId);
-        Button addFriend = getActivity().findViewById(R.id.addFriend);
-
-        addFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OkHttpClient client = new OkHttpClient.Builder().build();
-
-                RequestBody post = new FormBody.Builder()
-                        .add("friendId",friendId.getText().toString())
-                        .build();
-                Request request = new Request.Builder()
-                        .url(url)
-                        .post(post)
-                        .build();
-
-                Call call = client.newCall(request);
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Toast.makeText(getActivity(), "请求失败..", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        final String responseData = response.body().string();
-                        Toast.makeText(getActivity(), responseData, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
 
     }
 
