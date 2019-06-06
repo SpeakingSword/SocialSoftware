@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class AddFriendActivity extends AppCompatActivity {
-    private String addFriendUrl = "http://10.0.2.2:8080/TipTip/addFriendAction";
+    private String addFriendUrl = Urls.addFriendUrl;
     private String userId;
     private EditText friendId;
     private ACache aCache;

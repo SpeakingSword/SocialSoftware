@@ -35,8 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userId;
     private EditText userPassword;
     private ImageView loginIcon;
-    private String loginUrl = "http://10.0.2.2:8080/TipTip/loginAction";
-    private String loginIconUrl = "http://10.0.2.2:8081/avatar.png";
+    private String loginUrl = Urls.loginUrl;
+    //private String loginIconUrl = "http://10.0.2.2:8081/avatar.png";
    /* private Handler handler = new Handler(){
         public void handleMessage(Message msg) {
             Bitmap bitmap = (Bitmap)msg.obj;

@@ -48,7 +48,7 @@ public class ContactFragment extends Fragment {
     private LetterView letterView;
     private ContactAdapter adapter;
     private ACache aCache;
-    private String getFriendListUrl = "http://10.0.2.2:8080/TipTip/getFriendListAction";
+    private String getFriendListUrl = Urls.getFriendListUrl;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

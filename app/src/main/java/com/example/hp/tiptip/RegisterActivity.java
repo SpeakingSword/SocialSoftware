@@ -20,7 +20,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText userId;
     private EditText userName;
     private EditText userPassword;
-    private String registerUrl = "http://10.0.2.2:8080/TipTip/registerAction";
+    private String registerUrl = Urls.registerUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
