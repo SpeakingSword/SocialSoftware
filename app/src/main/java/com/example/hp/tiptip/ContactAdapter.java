@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -102,7 +103,7 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         CharacterHolder(View view) {
             super(view);
 
-            mTextView = (TextView) view.findViewById(R.id.character);
+            mTextView =  view.findViewById(R.id.character);
         }
     }
 
@@ -111,8 +112,13 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         ContactHolder(View view) {
             super(view);
-
-            mTextView = (TextView) view.findViewById(R.id.contact_name);
+            mTextView =  view.findViewById(R.id.contact_name);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, mTextView.getText(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

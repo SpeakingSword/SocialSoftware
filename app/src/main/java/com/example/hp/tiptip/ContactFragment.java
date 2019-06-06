@@ -3,6 +3,8 @@ package com.example.hp.tiptip;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +23,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -42,6 +46,7 @@ import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
  * create an instance of this fragment.
  */
 public class ContactFragment extends Fragment {
+    private boolean isFirstLoading = true;
     private RecyclerView contactList;
     private String[] contactNames;
     private LinearLayoutManager layoutManager;
@@ -49,6 +54,21 @@ public class ContactFragment extends Fragment {
     private ContactAdapter adapter;
     private ACache aCache;
     private String getFriendListUrl = Urls.getFriendListUrl;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            JSONArray jsonArray = (JSONArray) msg.obj;
+            contactNames = new String[jsonArray.length()];
+            try{
+                for (int i = 0;i<jsonArray.length();i++){
+                    contactNames[i] = jsonArray.getJSONObject(i).getString("user_id");
+                }
+            }catch (JSONException e){
+                Log.d(TAG, "handleMessage: "+e.getMessage());
+            }
+            showFriendList();
+        }
+    };
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -142,28 +162,8 @@ public class ContactFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        contactNames = new String[] {"张三丰", "郭靖", "黄蓉", "黄老邪", "赵敏", "123", "天山童姥", "任我行", "于万亭", "陈家洛", "韦小宝", "$6", "穆人清", "陈圆圆", "郭芙", "郭襄", "穆念慈", "东方不败", "梅超风", "林平之", "林远图", "灭绝师太", "段誉", "鸠摩智"};
-        contactList = getActivity().findViewById(R.id.contact_list);
-        letterView = getActivity().findViewById(R.id.letter_view);
-        layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new ContactAdapter(getActivity(), contactNames);
-
-        contactList.setLayoutManager(layoutManager);
-        contactList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-        contactList.setAdapter(adapter);
-
-        letterView.setCharacterListener(new LetterView.CharacterClickListener() {
-            @Override
-            public void clickCharacter(String character) {
-                layoutManager.scrollToPositionWithOffset(adapter.getScrollPosition(character), 0);
-            }
-
-            @Override
-            public void clickArrow() {
-                layoutManager.scrollToPositionWithOffset(0, 0);
-            }
-        });
         getFriendIdList();
+
     }
 
     private void getFriendIdList(){
@@ -196,19 +196,46 @@ public class ContactFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseData = response.body().string();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            JSONArray jsonArray = new JSONArray(responseData);
-                            Toast.makeText(getActivity(),jsonArray.toString(), Toast.LENGTH_LONG).show();
-                        }catch (JSONException e){
-                            Log.d(TAG, "run: "+e.getMessage());
-                        }
-                    }
-                });
+                try{
+                    JSONArray jsonArray = new JSONArray(responseData);
+                    Message msg = new Message();
+                    msg.obj = jsonArray;
+                    handler.sendMessage(msg);
+                }catch (JSONException e){
+                    Log.d(TAG, "run: "+e.getMessage());
+                }
             }
         });
 
+    }
+
+    private void showFriendList(){
+       // contactNames = new String[] {"张三丰", "郭靖", "黄蓉", "黄老邪", "赵敏", "123", "天山童姥", "任我行", "于万亭", "陈家洛", "韦小宝", "$6", "穆人清", "陈圆圆", "郭芙", "郭襄", "穆念慈", "东方不败", "梅超风", "林平之", "林远图", "灭绝师太", "段誉", "鸠摩智"};
+        contactList = getActivity().findViewById(R.id.contact_list);
+        letterView = getActivity().findViewById(R.id.letter_view);
+        layoutManager = new LinearLayoutManager(getActivity());
+        adapter = new ContactAdapter(getActivity(), contactNames);
+
+        contactList.setLayoutManager(layoutManager);
+        //contactList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        contactList.setAdapter(adapter);
+
+        letterView.setCharacterListener(new LetterView.CharacterClickListener() {
+            @Override
+            public void clickCharacter(String character) {
+                layoutManager.scrollToPositionWithOffset(adapter.getScrollPosition(character), 0);
+            }
+
+            @Override
+            public void clickArrow() {
+                layoutManager.scrollToPositionWithOffset(0, 0);
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getFriendIdList();
     }
 }

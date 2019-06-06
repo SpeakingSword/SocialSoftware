@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements MessageFragment.OnFragmentInteractionListener,
         ContactFragment.OnFragmentInteractionListener,User_infoFragment.OnFragmentInteractionListener{
@@ -119,4 +121,5 @@ public class MainActivity extends AppCompatActivity implements MessageFragment.O
     public void onUser_infoFragmentInteraction(Uri uri) {
 
     }
+
 }
