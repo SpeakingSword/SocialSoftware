@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -23,6 +30,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +42,14 @@ import okhttp3.Response;
  * create an instance of this fragment.
  */
 public class ContactFragment extends Fragment {
+    private RecyclerView contactList;
+    private String[] contactNames;
+    private LinearLayoutManager layoutManager;
+    private LetterView letterView;
+    private ContactAdapter adapter;
+    private ACache aCache;
+    private String getFriendListUrl = "http://10.0.2.2:8080/TipTip/getFriendListAction";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -73,6 +90,7 @@ public class ContactFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -124,10 +142,73 @@ public class ContactFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        contactNames = new String[] {"张三丰", "郭靖", "黄蓉", "黄老邪", "赵敏", "123", "天山童姥", "任我行", "于万亭", "陈家洛", "韦小宝", "$6", "穆人清", "陈圆圆", "郭芙", "郭襄", "穆念慈", "东方不败", "梅超风", "林平之", "林远图", "灭绝师太", "段誉", "鸠摩智"};
+        contactList = getActivity().findViewById(R.id.contact_list);
+        letterView = getActivity().findViewById(R.id.letter_view);
+        layoutManager = new LinearLayoutManager(getActivity());
+        adapter = new ContactAdapter(getActivity(), contactNames);
 
+        contactList.setLayoutManager(layoutManager);
+        contactList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        contactList.setAdapter(adapter);
+
+        letterView.setCharacterListener(new LetterView.CharacterClickListener() {
+            @Override
+            public void clickCharacter(String character) {
+                layoutManager.scrollToPositionWithOffset(adapter.getScrollPosition(character), 0);
+            }
+
+            @Override
+            public void clickArrow() {
+                layoutManager.scrollToPositionWithOffset(0, 0);
+            }
+        });
+        getFriendIdList();
     }
 
-    private String getFriendIdList(){
-        return null;
+    private void getFriendIdList(){
+        aCache = ACache.get(getActivity());
+        String userId = aCache.getAsString("userId");
+        OkHttpClient client = new OkHttpClient.Builder().build();
+
+        RequestBody post = new FormBody.Builder()
+                .add("userId",userId)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(getFriendListUrl)
+                .post(post)
+                .build();
+
+        Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "run: 请求失败...");
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String responseData = response.body().string();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            JSONArray jsonArray = new JSONArray(responseData);
+                            Toast.makeText(getActivity(),jsonArray.toString(), Toast.LENGTH_LONG).show();
+                        }catch (JSONException e){
+                            Log.d(TAG, "run: "+e.getMessage());
+                        }
+                    }
+                });
+            }
+        });
+
     }
 }

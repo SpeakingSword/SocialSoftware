@@ -35,7 +35,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.0.0-alpha02'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.okio:okio:2.2.2'
-    implementation fileTree(dir: 'libs', include: '*.jar')
+    implementation fileTree(include: '*.jar', dir: 'libs')
     // 添加依赖。注意，版本号必须一致。
     // 基础功能 (必需)
     implementation 'com.netease.nimlib:basesdk:6.5.0'
@@ -51,4 +51,5 @@ dependencies {
     implementation 'com.netease.nimlib:lucene:6.5.0'
     // 小米、华为、魅族、fcm 推送
     implementation 'com.netease.nimlib:push:6.5.0'
+    implementation files('libs/pinyin4j-2.5.0.jar')
 }
