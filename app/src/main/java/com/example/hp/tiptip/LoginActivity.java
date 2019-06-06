@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userId;
     private EditText userPassword;
     private ImageView loginIcon;
-    private String loginUrl = Urls.loginUrl;
+    private String loginUrl = Urls.LOGIN_URL;
     //private String loginIconUrl = "http://10.0.2.2:8081/avatar.png";
    /* private Handler handler = new Handler(){
         public void handleMessage(Message msg) {

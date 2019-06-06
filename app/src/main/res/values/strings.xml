@@ -23,4 +23,7 @@
     <string name="addFriend">添加好友</string>
     <string name="inputFriendId">填写对方账号</string>
     <string name="add">添加</string>
+    <string name="friend_info">个人名片</string>
+    <string name="goToChat">聊天</string>
+    <string name="deleteFriend">删除好友</string>
 </resources>

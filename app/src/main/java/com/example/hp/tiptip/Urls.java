@@ -1,9 +1,10 @@
 package com.example.hp.tiptip;
 
 public class Urls {
-    private final static String localhost = "http://192.168.3.2:8080/TipTip/";
-    public final static String loginUrl = localhost+"loginAction";
-    public final static String registerUrl = localhost+"registerAction";
-    public final static String addFriendUrl = localhost+"addFriendAction";
-    public final static String getFriendListUrl = localhost+"getFriendListAction";
+    private final static String LOCAL_HOST = "http://192.168.3.2:8080/TipTip/";
+    public final static String LOGIN_URL = LOCAL_HOST+"loginAction";
+    public final static String REGISTER_URL= LOCAL_HOST+"registerAction";
+    public final static String ADD_FRIEND_URL = LOCAL_HOST+"addFriendAction";
+    public final static String GET_FRIEND_LIST_URL = LOCAL_HOST+"getFriendListAction";
+    public final static String GET_FRIEND_INFO_URL = LOCAL_HOST+"getFriend_infoAction";
 }

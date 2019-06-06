@@ -20,7 +20,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText userId;
     private EditText userName;
     private EditText userPassword;
-    private String registerUrl = Urls.registerUrl;
+    private String registerUrl = Urls.REGISTER_URL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

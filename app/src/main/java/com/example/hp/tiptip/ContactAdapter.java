@@ -1,6 +1,8 @@
 package com.example.hp.tiptip;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,7 +118,11 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, mTextView.getText(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext,Friend_infoActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("friendId",mTextView.getText().toString());
+                    intent.putExtra("bundle",bundle);
+                    mContext.startActivity(intent);
                 }
             });
         }

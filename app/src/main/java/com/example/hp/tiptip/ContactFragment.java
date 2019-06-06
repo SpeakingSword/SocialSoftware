@@ -53,7 +53,7 @@ public class ContactFragment extends Fragment {
     private LetterView letterView;
     private ContactAdapter adapter;
     private ACache aCache;
-    private String getFriendListUrl = Urls.getFriendListUrl;
+    private String getFriendListUrl = Urls.GET_FRIEND_LIST_URL;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {

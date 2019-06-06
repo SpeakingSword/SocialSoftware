@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class AddFriendActivity extends AppCompatActivity {
-    private String addFriendUrl = Urls.addFriendUrl;
+    private String addFriendUrl = Urls.ADD_FRIEND_URL;
     private String userId;
     private EditText friendId;
     private ACache aCache;
@@ -52,6 +52,10 @@ public class AddFriendActivity extends AppCompatActivity {
     }
 
     public void addFriendCheck(View view){
+        if (friendId.getText().toString().equals(userId)){
+            Toast.makeText(AddFriendActivity.this, "不能添加自己为好友！", Toast.LENGTH_SHORT).show();
+            return;
+        }
         OkHttpClient client = new OkHttpClient.Builder().build();
 
         RequestBody post = new FormBody.Builder()
@@ -86,6 +90,7 @@ public class AddFriendActivity extends AppCompatActivity {
                         switch (responseData){
                             case "addFriendSuccess" :
                                 Toast.makeText(AddFriendActivity.this, "添加好友成功", Toast.LENGTH_SHORT).show();
+                                friendId.setText("");
                                  break;
                             case "noSuchId" :
                                 Toast.makeText(AddFriendActivity.this, "用户不存在", Toast.LENGTH_SHORT).show();

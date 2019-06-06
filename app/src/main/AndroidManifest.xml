@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hp.tiptip"
-    >
+    package="com.example.hp.tiptip">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -110,11 +109,16 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" android:theme="@style/mainActivity" />
+            android:label="@string/title_activity_main"
+            android:theme="@style/mainActivity" />
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/registerActivity" />
-        <activity android:name=".AddFriendActivity" android:label="@string/addFriend"></activity>
+        <activity
+            android:name=".AddFriendActivity"
+            android:label="@string/addFriend" />
+        <activity android:name=".Friend_infoActivity" android:label="@string/friend_info"  android:theme="@style/friend_infoActivity"></activity>
+
     </application>
 
 </manifest>
