@@ -47,7 +47,6 @@
             android:theme="@style/welcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -118,6 +117,7 @@
             android:name=".AddFriendActivity"
             android:label="@string/addFriend" />
         <activity android:name=".Friend_infoActivity" android:label="@string/friend_info"  android:theme="@style/friend_infoActivity"></activity>
+        <activity android:name=".ChatActivity" android:theme="@style/chatActivity" ></activity>
 
     </application>
 

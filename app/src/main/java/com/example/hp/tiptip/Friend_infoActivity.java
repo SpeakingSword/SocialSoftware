@@ -6,6 +6,8 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +32,7 @@ public class Friend_infoActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
                 JSONObject jsonObject = (JSONObject) msg.obj;
                 try {
-                    friendName.setText(friendName.getText().toString()+jsonObject.getString("friendName"));
+                    friendName.setText(friendName.getText().toString()+jsonObject.getString("userName"));
                 }catch (JSONException e){
                     Log.d("TAG", "handleMessage: "+e.getMessage());
                 }
@@ -47,13 +49,22 @@ public class Friend_infoActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         showFriendInfo();
     }
 
     void initVariable(){
         friendId = findViewById(R.id.friendId);
         friendName = findViewById(R.id.friendName);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void showFriendInfo(){
@@ -64,7 +75,7 @@ public class Friend_infoActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient.Builder().build();
 
         RequestBody post = new FormBody.Builder()
-                .add("friendId", bundle.getString("friendId"))
+                .add("userId", bundle.getString("friendId"))
                 .build();
 
         Request request = new Request.Builder()
@@ -102,5 +113,13 @@ public class Friend_infoActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    public void goToChat(View view){
+        startActivity(new Intent(Friend_infoActivity.this,ChatActivity.class));
+    }
+
+    public void deleteFriendCheck(View view){
+        
     }
 }

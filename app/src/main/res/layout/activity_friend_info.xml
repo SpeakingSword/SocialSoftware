@@ -73,6 +73,7 @@
             android:layout_height="58dp"
             android:text="@string/goToChat"
             android:textSize="18sp"
+            android:onClick="goToChat"
             android:layout_gravity="center_horizontal"
             />
         <Button

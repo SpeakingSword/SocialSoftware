@@ -6,5 +6,5 @@ public class Urls {
     public final static String REGISTER_URL= LOCAL_HOST+"registerAction";
     public final static String ADD_FRIEND_URL = LOCAL_HOST+"addFriendAction";
     public final static String GET_FRIEND_LIST_URL = LOCAL_HOST+"getFriendListAction";
-    public final static String GET_FRIEND_INFO_URL = LOCAL_HOST+"getFriend_infoAction";
+    public final static String GET_FRIEND_INFO_URL = LOCAL_HOST+"getFriendDataAction";
 }
