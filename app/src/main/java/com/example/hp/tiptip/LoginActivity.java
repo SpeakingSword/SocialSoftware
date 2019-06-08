@@ -7,9 +7,12 @@ import android.graphics.BitmapFactory;
 
 import android.os.Handler;
 import android.os.Message;
+
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,6 +22,9 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,23 +40,13 @@ import okhttp3.Response;
 public class LoginActivity extends AppCompatActivity {
     private EditText userId;
     private EditText userPassword;
-    private ImageView loginIcon;
     private String loginUrl = Urls.LOGIN_URL;
-    //private String loginIconUrl = "http://10.0.2.2:8081/avatar.png";
-   /* private Handler handler = new Handler(){
-        public void handleMessage(Message msg) {
-            Bitmap bitmap = (Bitmap)msg.obj;
-            loginIcon.setImageBitmap(bitmap);//将图片的流转换成图片
-        }
-    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //loginIcon = findViewById(R.id.loginIcon);
         initEditText();
-        //setImageView(loginIconUrl);
     }
 
     private void initEditText(){
@@ -59,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginCheck(View v){
-        //doIMLogin(username.getText().toString(),password.getText().toString());
         doServerLogin(loginUrl);
     }
 
@@ -86,8 +81,12 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                    //请求失败的处理
-                e.printStackTrace();
+                  runOnUiThread(new Runnable() {
+                      @Override
+                      public void run() {
+                          Toast.makeText(LoginActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
+                      }
+                  });
             }
 
             @Override
@@ -97,18 +96,28 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                       switch (responseData){
-                           case "loginSuccess" :
+                        String result = new String();
+                        String token = new String();
+                       try{
+                           JSONObject jsonObject = new JSONObject(responseData);
+                           result = jsonObject.getString("result");
+                           token = jsonObject.getString("token");
+                       }catch (JSONException e){
+                           Log.e("TAG","error:"+e.getMessage());
+                       }
+
+                       switch (result){
+                           case "firstGetToken" :
+                           case "haveToken" :
                                ACache aCache = ACache.get(LoginActivity.this);
                                aCache.put("userId",userId.getText().toString());
-                               Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                               startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                               finish();
+                               aCache.put("token",token);
+                               doIMLogin(userId.getText().toString(),token);
                                break;
                            case "wrongCode" :
                                Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
                                break;
-                           case "unexist" :
+                           case "noSuchUser" :
                                Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_SHORT).show();
                                break;
                            default:
@@ -120,14 +129,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void doIMLogin(String username, String password){
-        LoginInfo info = new LoginInfo(username,password); // config...
+    private void doIMLogin(String userId, String token){
+        LoginInfo info = new LoginInfo(userId,token); // config...
         RequestCallback<LoginInfo> callback =
                 new RequestCallback<LoginInfo>() {
                     @Override
                     public void onSuccess(LoginInfo param) {
-                        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                        startActivity(intent);
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         finish();
                     }
 
@@ -150,41 +159,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onException(Throwable exception) {
-
+                        Toast.makeText(LoginActivity.this, "登录异常", Toast.LENGTH_SHORT).show();
                     }
                     // 可以在此保存LoginInfo到本地，下次启动APP做自动登录用
                 };
         NIMClient.getService(AuthService.class).login(info)
                 .setCallback(callback);
     }
-
-    /*private void setImageView(String path){
-        OkHttpClient client = new OkHttpClient.Builder().build();
-        Request request = new Request.Builder()
-                .url(path)
-                .get()
-                .build();
-        Call call = client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(LoginActivity.this, "请求失败...", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                InputStream inputStream = response.body().byteStream();
-
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                Message msg = new Message();
-                msg.obj = bitmap;
-                handler.sendMessage(msg);
-            }
-        });
-    }*/
 }

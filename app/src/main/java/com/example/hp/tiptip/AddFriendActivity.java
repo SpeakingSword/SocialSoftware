@@ -32,6 +32,7 @@ public class AddFriendActivity extends AppCompatActivity {
         if(actionBar != null){
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_left_arrow);
         }
     }
 

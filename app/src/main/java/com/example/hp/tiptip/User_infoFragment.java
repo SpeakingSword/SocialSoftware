@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.AuthService;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -114,9 +117,10 @@ public class User_infoFragment extends Fragment {
         getActivity().findViewById(R.id.logoutBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //NIMClient.getService(AuthService.class).logout();
+                NIMClient.getService(AuthService.class).logout();
                 ACache aCache = ACache.get(getActivity());
                 aCache.remove("userId");
+                aCache.remove("token");
                 startActivity(new Intent(getActivity(),LoginActivity.class));
                 getActivity().finish();
             }

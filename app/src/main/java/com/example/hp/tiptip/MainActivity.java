@@ -15,6 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.AuthService;
+
 public class MainActivity extends AppCompatActivity implements MessageFragment.OnFragmentInteractionListener,
         ContactFragment.OnFragmentInteractionListener,User_infoFragment.OnFragmentInteractionListener{
 
@@ -100,7 +103,8 @@ public class MainActivity extends AppCompatActivity implements MessageFragment.O
             case R.id.addFriend :
                 startActivity(new Intent(MainActivity.this,AddFriendActivity.class));
                 break;
-            case R.id.setting :
+            case R.id.existApp :
+                NIMClient.getService(AuthService.class).logout();
                 MainActivity.this.finish();
                 break;
         }

@@ -48,6 +48,7 @@ public class Friend_infoActivity extends AppCompatActivity {
         if(actionBar != null){
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_left_arrow);
         }
         showFriendInfo();
     }
@@ -116,7 +117,11 @@ public class Friend_infoActivity extends AppCompatActivity {
     }
 
     public void goToChat(View view){
-        startActivity(new Intent(Friend_infoActivity.this,ChatActivity.class));
+        Intent intent = new Intent(Friend_infoActivity.this,ChatActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("friendId",friendId.getText().toString().replaceAll("账号：",""));
+        intent.putExtra("bundle",bundle);
+        startActivity(intent);
     }
 
     public void deleteFriendCheck(View view){
