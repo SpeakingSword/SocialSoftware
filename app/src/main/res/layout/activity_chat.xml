@@ -19,7 +19,8 @@
         >
         <EditText
             android:id="@+id/msg_chat"
-            android:layout_width="300dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="14"
             android:layout_height="match_parent"
             android:inputType="textMultiLine"
             />
@@ -27,6 +28,7 @@
             android:id="@+id/send"
             android:layout_width="80dp"
             android:layout_height="40dp"
+            android:layout_weight="1"
             android:text="@string/send"
             android:background="@drawable/send_btn"
             android:textColor="#fff"/>
