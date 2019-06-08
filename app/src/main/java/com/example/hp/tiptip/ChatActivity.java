@@ -1,6 +1,9 @@
 package com.example.hp.tiptip;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +13,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,6 +40,8 @@ public class ChatActivity extends AppCompatActivity {
     private MsgAdapter adapter;
     private TextView friendId;
 
+    private List<ChatRecord> chatRecordList = new ArrayList<ChatRecord>();
+
     Observer<List<IMMessage>> incomingMessageObserver =
             new Observer<List<IMMessage>>() {
                 @Override
@@ -52,6 +58,14 @@ public class ChatActivity extends AppCompatActivity {
                             // 将ListView定位到最后一行
                             msgReView.scrollToPosition(msgList.size() - 1);
 
+                            ACache aCache = ACache.get(ChatActivity.this);
+                            ChatRecord chatRecord = new ChatRecord();
+                            String receiver_id = aCache.getAsString("userId");
+                            chatRecord.setSenderId(friendId.getText().toString());
+                            chatRecord.setReceiverId(receiver_id);
+                            chatRecord.setContent(message.getContent());
+                            chatRecordList.add(chatRecord);
+
                         }
                     }
                 }
@@ -61,12 +75,12 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        ACache aCache = ACache.get(ChatActivity.this);
         setCustomActionBar();
         initVariable();
-        //initMsgs();
+        initMsgs(aCache.getAsString("userId"),friendId.getText().toString());
         NIMClient.getService(MsgServiceObserve.class)
                 .observeReceiveMessage(incomingMessageObserver, true);
-
     }
 
     @Override
@@ -78,7 +92,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void setCustomActionBar(){
         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
-                ActionBar.LayoutParams.MATCH_PARENT,Gravity.CENTER);
+                ActionBar.LayoutParams.MATCH_PARENT,Gravity.TOP);
         View mActionBarView = LayoutInflater.from(this).inflate(R.layout.chat_actionbar,null);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setCustomView(mActionBarView,layoutParams);
@@ -93,19 +107,16 @@ public class ChatActivity extends AppCompatActivity {
         send =  findViewById(R.id.send);
         msgReView =  findViewById(R.id.msg_view);
         friendId = findViewById(R.id.chat_friendId);
-
         friendId.setText(getFriendId());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        msgReView.setLayoutManager(layoutManager);
-        adapter = new MsgAdapter(msgList);
-        msgReView.setAdapter(adapter);
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String content = msg_chat.getText().toString();
                 if (!"".equals(content)) {
+
                     sendTextIMMessage(friendId.getText().toString(),content);
+
                 }
             }
         });
@@ -132,6 +143,15 @@ public class ChatActivity extends AppCompatActivity {
                 // 清空输入框中的内容
                 msg_chat.setText("");
                 Toast.makeText(ChatActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
+
+                //先保存来填记录到List里
+                ACache aCache = ACache.get(ChatActivity.this);
+                ChatRecord chatRecord = new ChatRecord();
+                String sender_id = aCache.getAsString("userId");
+                chatRecord.setSenderId(sender_id);
+                chatRecord.setReceiverId(friendId.getText().toString());
+                chatRecord.setContent(mContent);
+                chatRecordList.add(chatRecord);
             }
 
             @Override
@@ -146,29 +166,43 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-   /* private void initMsgs() {
-        Msg msg1 = new Msg("Hello guy.", Msg.TYPE_RECEIVED);
-        msgList.add(msg1);
-        Msg msg2 = new Msg("Hello. Who is that?", Msg.TYPE_SENT);
-        msgList.add(msg2);
-        Msg msg3 = new Msg("This is Tom. Nice talking to you. ", Msg.TYPE_RECEIVED);
-        msgList.add(msg3);
-    }
-    */
+    private void initMsgs(String userId, String friendId) {
+        DBHelper dbHelper = new DBHelper(ChatActivity.this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
+        Cursor c = db.rawQuery("select sender_id,receiver_id,content from chat_record_of_friend where sender_id ="+
+                "'"+userId+"'"+" and receiver_id ="+"'"+friendId+"'"+" or sender_id ="+"'"+friendId+"'"+" and receiver_id ="+
+                "'"+userId+"'"+" order by build_time asc;",null);
+        while(c.moveToNext()){
+            String content = c.getString(2);
+            String sender = c.getString(0);
+            int msgType = sender.equals(userId) ? Msg.TYPE_SENT : Msg.TYPE_RECEIVED;
+            Msg msg = new Msg(content,msgType);
+            msgList.add(msg);
         }
-        return super.onOptionsItemSelected(item);
+        c.close();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        msgReView.setLayoutManager(layoutManager);
+        adapter = new MsgAdapter(msgList);
+        msgReView.setAdapter(adapter);
+        adapter.notifyItemInserted(msgList.size() - 1);
+        msgReView.scrollToPosition(msgList.size() - 1);
     }
-    */
+
 
     public void goBackInfo(View view){
-        this.finish();
+        if (chatRecordList.isEmpty()){
+            this.finish();
+        }else{
+            DBHelper dbHelper = new DBHelper(ChatActivity.this);
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            for(ChatRecord chatRecord : chatRecordList){
+                db.execSQL("insert into chat_record_of_friend(sender_id,receiver_id,content,content_type,build_time) " +
+                        "values(?,?,?,'TEXT',datetime('now'))", new Object[]{chatRecord.getSenderId(),chatRecord.getReceiverId(),
+                        chatRecord.getContent()});
+            }
+            this.finish();
+        }
     }
 }
