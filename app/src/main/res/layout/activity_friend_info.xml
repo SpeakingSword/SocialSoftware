@@ -51,7 +51,7 @@
                     android:layout_marginBottom="5dp"
                     android:textColor="@color/black"
                     android:gravity="center_vertical"
-                    android:text="账号："
+                    android:text="@string/account"
                     />
                 <TextView
                     android:id="@+id/friendName"
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
                     android:layout_marginBottom="5dp"
-                    android:text="昵称："
+                    android:text="@string/nickname"
                     android:textColor="@color/black"
                     android:gravity="center_vertical"
                     />

@@ -26,4 +26,12 @@
     <string name="friend_info">个人名片</string>
     <string name="goToChat">聊天</string>
     <string name="deleteFriend">删除好友</string>
+    <string name="send">发送</string>
+    <string name="account">账号</string>
+    <string name="nickname">昵称</string>
+    <string name="input_userId">输入账号</string>
+    <string name="input_password">输入密码</string>
+    <string name="input_nickname">输入昵称</string>
+    <string name="logout">注销</string>
+    <string name="existApp">退出程序</string>
 </resources>

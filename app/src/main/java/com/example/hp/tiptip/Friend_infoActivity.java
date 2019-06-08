@@ -32,7 +32,7 @@ public class Friend_infoActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
                 JSONObject jsonObject = (JSONObject) msg.obj;
                 try {
-                    friendName.setText(friendName.getText().toString()+jsonObject.getString("userName"));
+                    friendName.setText(friendName.getText().toString()+"："+jsonObject.getString("userName"));
                 }catch (JSONException e){
                     Log.d("TAG", "handleMessage: "+e.getMessage());
                 }
@@ -71,7 +71,7 @@ public class Friend_infoActivity extends AppCompatActivity {
     private void showFriendInfo(){
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
-        friendId.setText(friendId.getText().toString()+bundle.getString("friendId"));
+        friendId.setText(friendId.getText().toString()+"："+bundle.getString("friendId"));
 
         OkHttpClient client = new OkHttpClient.Builder().build();
 

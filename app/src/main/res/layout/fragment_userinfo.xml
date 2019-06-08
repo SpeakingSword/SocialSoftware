@@ -41,7 +41,7 @@
             android:layout_marginTop="20dp"
             android:layout_width="300dp"
             android:layout_height="60dp"
-            android:text="注销"
+            android:text="@string/logout"
             android:textStyle="bold"
             android:textSize="20sp"
             android:layout_gravity="center_horizontal"
