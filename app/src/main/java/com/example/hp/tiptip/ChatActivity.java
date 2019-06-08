@@ -194,14 +194,19 @@ public class ChatActivity extends AppCompatActivity {
         if (chatRecordList.isEmpty()){
             this.finish();
         }else{
-            DBHelper dbHelper = new DBHelper(ChatActivity.this);
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    DBHelper dbHelper = new DBHelper(ChatActivity.this);
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-            for(ChatRecord chatRecord : chatRecordList){
-                db.execSQL("insert into chat_record_of_friend(sender_id,receiver_id,content,content_type,build_time) " +
-                        "values(?,?,?,'TEXT',datetime('now'))", new Object[]{chatRecord.getSenderId(),chatRecord.getReceiverId(),
-                        chatRecord.getContent()});
-            }
+                    for(ChatRecord chatRecord : chatRecordList){
+                        db.execSQL("insert into chat_record_of_friend(sender_id,receiver_id,content,content_type,build_time) " +
+                                "values(?,?,?,'TEXT',datetime('now'))", new Object[]{chatRecord.getSenderId(),chatRecord.getReceiverId(),
+                                chatRecord.getContent()});
+                    }
+                }
+            });
             this.finish();
         }
     }
