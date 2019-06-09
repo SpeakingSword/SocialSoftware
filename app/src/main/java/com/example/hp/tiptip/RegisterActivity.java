@@ -90,7 +90,8 @@ public class RegisterActivity extends AppCompatActivity {
                             case "registerSuccess" :
                                 Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                                 break;
-                            default:
+                            case "idExist" :
+                                Toast.makeText(RegisterActivity.this, "用户已存在", Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }

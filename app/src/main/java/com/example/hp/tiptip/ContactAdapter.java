@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +19,10 @@ import java.util.Map;
 public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private LayoutInflater mLayoutInflater;
     private Context mContext;
-    private String[] mContactNames; // 联系人名称字符串数组
-    private List<String> mContactList; // 联系人名称List（转换成拼音）
+
+    private String[] mContactIds; //联系人ID字符串数组
+    private String[] mContactNames; //联系人昵称字符串数组
+    private List<String> mContactList; // 联系人IDList（转换成拼音）
     private List<Contact> resultList; // 最终结果（包含分组的字母）
     private List<String> characterList; // 字母List
 
@@ -30,21 +31,23 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ITEM_TYPE_CONTACT
     }
 
-    public ContactAdapter(Context context, String[] contactNames) {
+    public ContactAdapter(Context context,  String[] contactIds, String[] contactNames) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
+        mContactIds = contactIds;
         mContactNames = contactNames;
-
         handleContact();
     }
 
     private void handleContact() {
         mContactList = new ArrayList<>();
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();  //拼音和ID的对应
+        Map<String, String> map2 = new HashMap<>();  //拼音和昵称的对应
 
-        for (int i = 0; i < mContactNames.length; i++) {
-            String pinyin = Utils.getPingYin(mContactNames[i]);
-            map.put(pinyin, mContactNames[i]);
+        for (int i = 0; i < mContactIds.length; i++) {
+            String pinyin = Utils.getPingYin(mContactIds[i]);
+            map.put(pinyin, mContactIds[i]);
+            map2.put(pinyin,mContactNames[i]);
             mContactList.add(pinyin);
         }
         Collections.sort(mContactList, new ContactComparator());
@@ -53,8 +56,8 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         characterList = new ArrayList<>();
 
         for (int i = 0; i < mContactList.size(); i++) {
-            String name = mContactList.get(i);
-            String character = (name.charAt(0) + "").toUpperCase(Locale.ENGLISH);
+            String id_pinyin = mContactList.get(i);
+            String character = (id_pinyin.charAt(0) + "").toUpperCase(Locale.ENGLISH);
             if (!characterList.contains(character)) {
                 if (character.hashCode() >= "A".hashCode() && character.hashCode() <= "Z".hashCode()) { // 是字母
                     characterList.add(character);
@@ -67,7 +70,7 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             }
 
-            resultList.add(new Contact(map.get(name), ITEM_TYPE.ITEM_TYPE_CONTACT.ordinal()));
+            resultList.add(new Contact(map.get(id_pinyin), map2.get(id_pinyin),ITEM_TYPE.ITEM_TYPE_CONTACT.ordinal()));
         }
     }
 
@@ -83,9 +86,10 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CharacterHolder) {
-            ((CharacterHolder) holder).mTextView.setText(resultList.get(position).getmName());
+            ((CharacterHolder) holder).mTextView.setText(resultList.get(position).getmId());
         } else if (holder instanceof ContactHolder) {
-            ((ContactHolder) holder).mTextView.setText(resultList.get(position).getmName());
+            ((ContactHolder) holder).mTextView.setText(resultList.get(position).getmId());
+            ((ContactHolder) holder).mTextView2.setText(resultList.get(position).getmName());
         }
     }
 
@@ -111,10 +115,11 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public class ContactHolder extends RecyclerView.ViewHolder {
         TextView mTextView;
-
+        TextView mTextView2;
         ContactHolder(View view) {
             super(view);
-            mTextView =  view.findViewById(R.id.contact_name);
+            mTextView =  view.findViewById(R.id.contact_id);
+            mTextView2 = view.findViewById(R.id.contact_name);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -128,10 +133,11 @@ public class ContactAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+
     public int getScrollPosition(String character) {
         if (characterList.contains(character)) {
             for (int i = 0; i < resultList.size(); i++) {
-                if (resultList.get(i).getmName().equals(character)) {
+                if (resultList.get(i).getmId().equals(character)) {
                     return i;
                 }
             }

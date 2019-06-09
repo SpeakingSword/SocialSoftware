@@ -48,7 +48,9 @@ import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
 public class ContactFragment extends Fragment {
     private boolean isFirstLoading = true;
     private RecyclerView contactList;
-    private String[] contactNames;
+
+    private String[] contactIds;          //保存朋友账号
+    private String[] contactNames;    //保存朋友昵称
     private LinearLayoutManager layoutManager;
     private LetterView letterView;
     private ContactAdapter adapter;
@@ -58,10 +60,12 @@ public class ContactFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             JSONArray jsonArray = (JSONArray) msg.obj;
+            contactIds = new String[jsonArray.length()];
             contactNames = new String[jsonArray.length()];
             try{
                 for (int i = 0;i<jsonArray.length();i++){
-                    contactNames[i] = jsonArray.getJSONObject(i).getString("user_id");
+                    contactIds[i] = jsonArray.getJSONObject(i).getString("user_id");
+                    contactNames[i] = jsonArray.getJSONObject(i).getString("username");
                 }
             }catch (JSONException e){
                 Log.d(TAG, "handleMessage: "+e.getMessage());
@@ -214,7 +218,7 @@ public class ContactFragment extends Fragment {
         contactList = getActivity().findViewById(R.id.contact_list);
         letterView = getActivity().findViewById(R.id.letter_view);
         layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new ContactAdapter(getActivity(), contactNames);
+        adapter = new ContactAdapter(getActivity(), contactIds,contactNames);
 
         contactList.setLayoutManager(layoutManager);
         //contactList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
