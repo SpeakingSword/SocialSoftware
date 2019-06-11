@@ -3,10 +3,21 @@ package com.example.hp.tiptip;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallbackWrapper;
+import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.model.RecentContact;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -104,5 +115,46 @@ public class MessageFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onMessageFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getRecentContactList();
+
+    }
+
+    private void getRecentContactList(){
+
+            NIMClient.getService(MsgService.class).queryRecentContacts().setCallback(
+                    new RequestCallbackWrapper<List<RecentContact>>() {
+                        @Override
+                        public void onResult(int code, List<RecentContact> result, Throwable exception) {
+                            List<String> characterList = new ArrayList<>();
+                            TextView mTextView = getActivity().findViewById(R.id.recentContact);
+                            Iterator<RecentContact> it = result.iterator();
+                            while(it.hasNext()){
+                                    RecentContact recentContact = it.next();
+                                    String character = (recentContact.getContactId().charAt(0)+"").toUpperCase();
+                                    if (characterList.contains(character)){
+                                            //什么也不做
+                                    }else {
+                                        characterList.add(character);
+                                        mTextView.setText(mTextView.getText()+"\n"+recentContact.getContactId()+"："+recentContact.getContent());
+                                    }
+                            }
+                        }
+                    }
+            );
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            TextView mTextView = getActivity().findViewById(R.id.recentContact);
+            mTextView.setText("");
+            getRecentContactList();
+        }
     }
 }

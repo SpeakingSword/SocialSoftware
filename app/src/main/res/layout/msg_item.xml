@@ -57,7 +57,8 @@
             android:gravity="center"
             android:layout_margin="10dp"
             android:textColor="#fff"/>
-    </LinearLayout>  <ImageView
+    </LinearLayout>
+            <ImageView
             android:id="@+id/head_right"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
