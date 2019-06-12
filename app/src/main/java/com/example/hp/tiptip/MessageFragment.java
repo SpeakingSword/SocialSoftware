@@ -5,10 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
@@ -16,8 +23,11 @@ import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
 
 
 /**
@@ -29,6 +39,8 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class MessageFragment extends Fragment {
+    private RecyclerView recentContactListView;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -120,31 +132,51 @@ public class MessageFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getRecentContactList();
+        recentContactListView = getActivity().findViewById(R.id.recent_contact_list);
+        setRecentContactList();
+
 
     }
 
-    private void getRecentContactList(){
+    public void setRecentContactList(){
 
             NIMClient.getService(MsgService.class).queryRecentContacts().setCallback(
                     new RequestCallbackWrapper<List<RecentContact>>() {
                         @Override
                         public void onResult(int code, List<RecentContact> result, Throwable exception) {
-                            List<String> characterList = new ArrayList<>();
-                            TextView mTextView = getActivity().findViewById(R.id.recentContact);
-                            Iterator<RecentContact> it = result.iterator();
-                            while(it.hasNext()){
+                            if (result.isEmpty()){
+                                //什么也不做
+                            }else {
+                                //保存
+                                ArrayList<HashMap<String,Object>> resultMapList = new ArrayList<>();
+
+                                List<String> characterList = new ArrayList<>();
+                                Iterator<RecentContact> it = result.iterator();
+
+                                while(it.hasNext()){
+
                                     RecentContact recentContact = it.next();
                                     String character = (recentContact.getContactId().charAt(0)+"").toUpperCase();
+
+                                    HashMap<String,Object> mResult = new HashMap<String,Object>();
                                     if (characterList.contains(character)){
-                                            //什么也不做
+                                        //什么也不做
                                     }else {
                                         characterList.add(character);
-                                        mTextView.setText(mTextView.getText()+"\n"+recentContact.getContactId()+"："+recentContact.getContent());
-                                    }
-                            }
-                        }
-                    }
+                                        mResult.put("recent_contact_id",character+recentContact.getContactId().substring(1));
+                                        mResult.put("recent_contact_content",recentContact.getContent());
+                                        resultMapList.add(mResult);
+                                    }//结束第二个if
+                                }//结束while
+
+                                RecentContactAdapter recentContactAdapter = new RecentContactAdapter(getActivity(),resultMapList);
+                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                                recentContactListView.setLayoutManager(linearLayoutManager);
+                                recentContactListView.setAdapter(recentContactAdapter);
+
+                            }//结束第一个if
+                        }//结束回调
+                    }//结束方法
             );
     }
 
@@ -152,9 +184,13 @@ public class MessageFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden){
-            TextView mTextView = getActivity().findViewById(R.id.recentContact);
-            mTextView.setText("");
-            getRecentContactList();
+            setRecentContactList();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setRecentContactList();
     }
 }

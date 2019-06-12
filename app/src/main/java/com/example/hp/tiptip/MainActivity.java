@@ -1,6 +1,7 @@
 package com.example.hp.tiptip;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,7 +17,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MessageFragment.OnFragmentInteractionListener,
         ContactFragment.OnFragmentInteractionListener,User_infoFragment.OnFragmentInteractionListener{
@@ -26,6 +33,36 @@ public class MainActivity extends AppCompatActivity implements MessageFragment.O
     private ContactFragment contactFragment;
     private User_infoFragment userInfoFragment;
     private Fragment isFrament;
+
+    Observer<List<IMMessage>> incomingMessageObserver =
+            new Observer<List<IMMessage>>() {
+                @Override
+                public void onEvent(List<IMMessage> messages) {
+                    // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
+                    for (IMMessage message : messages){
+                        if (message.getMsgType() == MsgTypeEnum.text){
+
+                            ACache aCache = ACache.get(MainActivity.this);
+                            String receiver_id = aCache.getAsString("userId");
+                            String original_id = message.getFromAccount();
+                            String head = (original_id.charAt(0)+"").toUpperCase();
+                            String body = (original_id.substring(1));
+                            String sender_id = head+body;
+                            String content = message.getContent();
+
+                            DBHelper dbHelper = new DBHelper(MainActivity.this);
+                            SQLiteDatabase db = dbHelper.getWritableDatabase();
+                            db.execSQL("insert into chat_record_of_friend(sender_id,receiver_id,content,content_type,build_time) " +
+                                    "values(?,?,?,'TEXT',datetime('now'))",new Object[]{sender_id,receiver_id,content});
+
+                            db.close();
+                            messageFragment.setRecentContactList();
+
+
+                        }
+                    }
+                }
+            };
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -63,6 +100,15 @@ public class MainActivity extends AppCompatActivity implements MessageFragment.O
         initeFragment(savedInstanceState);
         BottomNavigationView navigation =  findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        NIMClient.getService(MsgServiceObserve.class)
+                .observeReceiveMessage(incomingMessageObserver, true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        NIMClient.getService(MsgServiceObserve.class)
+                .observeReceiveMessage(incomingMessageObserver, false);
     }
 
     private void initeFragment(Bundle savedInstanceState){
@@ -118,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragment.O
 
     @Override
     public void onMessageFragmentInteraction(Uri uri) {
+
 
     }
 

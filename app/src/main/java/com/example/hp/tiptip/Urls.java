@@ -1,7 +1,7 @@
 package com.example.hp.tiptip;
 
 public class Urls {
-    private final static String LOCAL_HOST = "http://10.108.30.251:8080/TipTip/";
+    private final static String LOCAL_HOST = "http://192.168.3.2:8080/TipTip/";
     public final static String LOGIN_URL = LOCAL_HOST+"loginAction";
     public final static String REGISTER_URL= LOCAL_HOST+"registerAction";
     public final static String ADD_FRIEND_URL = LOCAL_HOST+"addFriendAction";

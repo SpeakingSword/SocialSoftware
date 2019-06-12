@@ -181,6 +181,7 @@ public class ChatActivity extends AppCompatActivity {
             msgList.add(msg);
         }
         c.close();
+        db.close();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         msgReView.setLayoutManager(layoutManager);
         adapter = new MsgAdapter(msgList);
@@ -205,6 +206,7 @@ public class ChatActivity extends AppCompatActivity {
                                 "values(?,?,?,'TEXT',datetime('now'))", new Object[]{chatRecord.getSenderId(),chatRecord.getReceiverId(),
                                 chatRecord.getContent()});
                     }
+                    db.close();
                 }
             });
             this.finish();
