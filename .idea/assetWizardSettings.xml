@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_left_arrow" />
-                            <entry key="sourceFile" value="D:\Pictures\svg\left_arrow.svg" />
+                            <entry key="outputName" value="ic_recent_contact_icon" />
+                            <entry key="sourceFile" value="D:\Pictures\svg\account.svg" />
                           </map>
                         </option>
                       </PersistentState>

@@ -62,6 +62,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
     }
 
+    public void goBackOS(View v){
+        finish();
+    }
+
     private void doServerLogin(String url){
         //初始化okhttp客户端
         OkHttpClient client = new OkHttpClient.Builder().build();

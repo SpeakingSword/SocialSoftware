@@ -50,6 +50,10 @@ public class RegisterActivity extends AppCompatActivity {
         userPassword = findViewById(R.id.registerUserPassword);
     }
 
+    public void goBackLogin(View view){
+       finish();
+    }
+
     public void registerCheck(View v){
         OkHttpClient client = new OkHttpClient.Builder().build();
 

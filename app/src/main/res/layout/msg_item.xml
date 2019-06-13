@@ -14,9 +14,9 @@
         <ImageView
             android:id="@+id/head_left"
             android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_gravity="left"
-            android:src="@drawable/head_left"/>
+            android:src="@drawable/people1"/>
 
 
         <LinearLayout
@@ -61,8 +61,8 @@
             <ImageView
             android:id="@+id/head_right"
             android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/head_right"/>
+            android:layout_height="50dp"
+            android:src="@drawable/people1"/>
         </LinearLayout>
 
 

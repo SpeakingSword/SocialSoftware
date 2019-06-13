@@ -1,6 +1,7 @@
 package com.example.hp.tiptip;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,8 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 
 import java.util.ArrayList;
@@ -40,6 +45,25 @@ import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
  */
 public class MessageFragment extends Fragment {
     private RecyclerView recentContactListView;
+
+   /*Observer<List<IMMessage>> incomingMessageObserver =
+            new Observer<List<IMMessage>>() {
+                @Override
+                public void onEvent(List<IMMessage> messages) {
+                    // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
+                    for (IMMessage message : messages){
+                        if (message.getMsgType() == MsgTypeEnum.text){
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+
+                                }
+                            });
+                        }
+                    }
+                }
+            };*/
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,6 +105,8 @@ public class MessageFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        /*NIMClient.getService(MsgServiceObserve.class)
+                .observeReceiveMessage(incomingMessageObserver, true);*/
     }
 
     @Override
@@ -88,6 +114,13 @@ public class MessageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_message, container, false);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        /*NIMClient.getService(MsgServiceObserve.class)
+                .observeReceiveMessage(incomingMessageObserver, false);*/
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -172,6 +205,7 @@ public class MessageFragment extends Fragment {
                                 RecentContactAdapter recentContactAdapter = new RecentContactAdapter(getActivity(),resultMapList);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                                 recentContactListView.setLayoutManager(linearLayoutManager);
+                                recentContactListView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
                                 recentContactListView.setAdapter(recentContactAdapter);
 
                             }//结束第一个if

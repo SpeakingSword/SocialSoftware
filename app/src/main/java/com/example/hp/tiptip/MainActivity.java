@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements MessageFragment.O
 
                             db.close();
                             messageFragment.setRecentContactList();
-
-
                         }
                     }
                 }

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#d8e0e8">
+    android:background="#2e2e2e">
 
     <android.support.v7.widget.RecyclerView
         android:layout_weight="1"
@@ -16,21 +16,34 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
+        android:background="@color/colorAccent"
         >
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/voice_hover_bg"
+            android:src="@drawable/ic_voice_hover"
+            />
         <EditText
             android:id="@+id/msg_chat"
+            android:background="@drawable/send_msg_edit_text"
             android:layout_width="wrap_content"
             android:layout_weight="14"
-            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="40dp"
             android:inputType="textMultiLine"
             />
         <Button
             android:id="@+id/send"
-            android:layout_width="80dp"
+            android:layout_width="50dp"
             android:layout_height="40dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:text="@string/send"
-            android:background="@drawable/send_btn"
+            android:background="@drawable/send_msg_btn"
             android:textColor="#fff"/>
 
 
