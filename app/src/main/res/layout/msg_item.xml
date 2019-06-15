@@ -16,7 +16,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="left"
-            android:src="@drawable/people1"/>
+            android:src="@drawable/ic_woman"/>
 
 
         <LinearLayout
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_margin="10dp"
-            android:textColor="#130D0D"
+            android:textColor="@color/black"
 
             />
         </LinearLayout>
@@ -56,13 +56,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_margin="10dp"
-            android:textColor="#fff"/>
+            android:textColor="@color/black"/>
     </LinearLayout>
             <ImageView
             android:id="@+id/head_right"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/people1"/>
+            android:src="@drawable/ic_man"/>
         </LinearLayout>
 
 

@@ -34,4 +34,5 @@
     <string name="input_nickname">输入昵称</string>
     <string name="logout">注销</string>
     <string name="existApp">退出程序</string>
+    <string name="main_page"></string>
 </resources>

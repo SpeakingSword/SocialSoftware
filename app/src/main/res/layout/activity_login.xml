@@ -84,8 +84,11 @@
 
     <Button
         android:id="@+id/loginBtn"
-        android:layout_width="357dp"
+        android:layout_width="340dp"
         android:onClick="loginCheck"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:background="@drawable/login_btn"
         android:layout_gravity="center_horizontal"
         android:layout_height="58dp"
         android:text="登录" />
@@ -95,6 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_gravity="right"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:textSize="18sp"
         android:layout_marginRight="15dp"

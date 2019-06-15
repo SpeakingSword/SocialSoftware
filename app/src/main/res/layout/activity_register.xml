@@ -96,8 +96,11 @@
 
     <Button
         android:id="@+id/registerBtn"
-        android:layout_width="357dp"
+        android:layout_width="340dp"
         android:onClick="registerCheck"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:background="@drawable/login_btn"
         android:layout_gravity="center_horizontal"
         android:layout_height="58dp"
         android:text="注册" />

@@ -6,12 +6,30 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 /**
@@ -23,6 +41,16 @@ import com.netease.nimlib.sdk.auth.AuthService;
  * create an instance of this fragment.
  */
 public class User_infoFragment extends Fragment {
+    private ImageView head;
+    private TextView username;
+    private TextView sex;
+    private TextView birthday;
+    private TextView phone;
+    private TextView email;
+    private TextView sign;
+    private String user_id;
+    private String url = Urls.GET_USER_INFO_URL;
+    private Button btn_modify;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -114,6 +142,15 @@ public class User_infoFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        username = getActivity().findViewById(R.id.username);
+        sex = getActivity().findViewById(R.id.sex);
+        birthday = getActivity().findViewById(R.id.birthday);
+        phone = getActivity().findViewById(R.id.phone);
+        email = getActivity().findViewById(R.id.email);
+        sign = getActivity().findViewById(R.id.sign);
+        requestDate();
+        init();
+
         getActivity().findViewById(R.id.logoutBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,5 +162,84 @@ public class User_infoFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+
+    }
+
+    public void init(){
+        btn_modify = getActivity().findViewById(R.id.btn_modify);
+
+        btn_modify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(),ModifyUser_infoActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void requestDate() {
+        ACache aCache = ACache.get(getActivity());
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add("user_id",aCache.getAsString("userId"))
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+
+                final String responsedata = response.body().string();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(responsedata);
+                            //  String id = jsonObject.getString("user_id");
+                            String  nichen = jsonObject.getString("username");
+                            String   xibie = jsonObject.getString("sex");
+                            String  shengri = jsonObject.getString("birthday");
+                            String  shouji = jsonObject.getString("phone");
+                            String  youxiang = jsonObject.getString("email");
+                            String qianming = jsonObject.getString("sign");
+
+                            username.setText(nichen);
+                            sex.setText(xibie);
+                            birthday.setText(shengri);
+                            phone.setText(shouji);
+                            email.setText(youxiang);
+                            sign.setText(qianming);
+
+                        } catch (JSONException e){
+                            e.printStackTrace();
+
+                        }
+
+                    }
+                });
+
+            }
+
+        });
+
     }
 }

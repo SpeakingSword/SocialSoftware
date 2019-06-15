@@ -15,7 +15,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/ic_recent_contact_icon"/>
+        android:background="@drawable/funny_galsses_man"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="80dp"
@@ -35,6 +35,7 @@
             android:id="@+id/recent_contact_content"
             android:layout_width="200dp"
             android:layout_height="40dp"
+            android:textColor="#111111"
             android:layout_marginLeft="15dp"
             android:textSize="15sp"
             android:singleLine="true"

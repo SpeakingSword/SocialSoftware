@@ -36,10 +36,10 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_my_round"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_my_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -47,6 +47,7 @@
             android:theme="@style/welcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -108,17 +109,23 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"
+            android:label="主页"
             android:theme="@style/mainActivity" />
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/registerActivity" />
         <activity
             android:name=".AddFriendActivity"
+            android:theme="@style/addFriendActivity"
             android:label="@string/addFriend" />
-        <activity android:name=".Friend_infoActivity" android:label="@string/friend_info"  android:theme="@style/friend_infoActivity"></activity>
-        <activity android:name=".ChatActivity" android:theme="@style/chatActivity" ></activity>
-
+        <activity
+            android:name=".Friend_infoActivity"
+            android:label="@string/friend_info"
+            android:theme="@style/friend_infoActivity" />
+        <activity
+            android:name=".ChatActivity"
+            android:theme="@style/chatActivity" />
+        <activity android:name=".ModifyUser_infoActivity" android:theme="@style/mainActivity" android:label="个人信息修改"></activity>
     </application>
 
 </manifest>

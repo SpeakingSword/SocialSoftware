@@ -55,6 +55,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void registerCheck(View v){
+
+        if(userId.getText().toString().length() < 5){
+            Toast.makeText(this, "账号长度应大于5位", Toast.LENGTH_SHORT).show();
+            return;
+        }
         OkHttpClient client = new OkHttpClient.Builder().build();
 
         RequestBody post = new FormBody.Builder()

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ModifyUser_infoActivity">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="340dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="昵称:"
+            android:textSize="20dp"/>
+
+        <EditText
+            android:id="@+id/set_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:inputType="textPersonName"
+            android:layout_marginRight="35dp"
+            android:gravity="center_vertical"
+            android:hint="输入昵称"
+            android:paddingLeft="8dp"
+            android:textColor="#000000"
+            android:textColorHint="#a3a3a3"
+            android:textSize="18dp"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="性别:"
+            android:textSize="20dp"/>
+
+        <RadioGroup
+            android:id="@+id/set_sex"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.6"
+            android:paddingLeft="5dp">
+
+            <RadioButton
+                android:id="@+id/BtnFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Female"
+                android:textColor="#4f4f4f"
+                android:textSize="18dp" />
+            <RadioButton
+                android:id="@+id/BtnMale"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="#4f4f4f"
+                android:text="Male"/>
+        </RadioGroup>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="340dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="生日:"
+            android:textSize="20dp"/>
+
+        <EditText
+            android:id="@+id/set_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="35dp"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:hint="输入生日"
+            android:paddingLeft="8dp"
+            android:textColor="#000000"
+            android:textColorHint="#a3a3a3"
+            android:textSize="18dp"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="340dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机:"
+            android:textSize="20dp"/>
+
+        <EditText
+            android:id="@+id/set_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="35dp"
+            android:inputType="phone"
+            android:gravity="center_vertical"
+            android:hint="输入手机号"
+            android:paddingLeft="8dp"
+            android:textColor="#000000"
+            android:textColorHint="#a3a3a3"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="340dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="邮箱:"
+            android:textSize="20dp"/>
+
+        <EditText
+            android:id="@+id/set_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:inputType="textEmailAddress"
+            android:layout_marginRight="35dp"
+            android:gravity="center_vertical"
+            android:hint="输入邮箱"
+            android:paddingLeft="8dp"
+            android:textColor="#000000"
+            android:textColorHint="#a3a3a3"
+            android:textSize="16dp"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="340dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="个性签名"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"/>
+
+        <EditText
+            android:id="@+id/set_sign"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="35dp"
+            android:gravity="center_vertical"
+            android:hint="告诉我们你今天的心情"
+            android:inputType="textMultiLine"
+            android:paddingLeft="8dp"
+            android:textColor="#000000"
+            android:textColorHint="#a3a3a3"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="340dp"
+        android:layout_height="58dp"
+        android:background="@drawable/login_btn"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:text="点击保存"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        />
+</LinearLayout>
+</android.support.constraint.ConstraintLayout>
