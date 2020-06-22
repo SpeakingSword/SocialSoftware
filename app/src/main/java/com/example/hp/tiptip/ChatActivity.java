@@ -58,6 +58,7 @@ public class ChatActivity extends AppCompatActivity {
                             // 将ListView定位到最后一行
                             msgReView.scrollToPosition(msgList.size() - 1);
 
+                            /*** 这里不保存消息，只刷新消息列表
                             ACache aCache = ACache.get(ChatActivity.this);
                             ChatRecord chatRecord = new ChatRecord();
                             String receiver_id = aCache.getAsString("userId");
@@ -65,8 +66,10 @@ public class ChatActivity extends AppCompatActivity {
                             chatRecord.setReceiverId(receiver_id);
                             chatRecord.setContent(message.getContent());
                             chatRecordList.add(chatRecord);
+                             **/
 
                         }
+
                     }
                 }
             };
@@ -145,13 +148,24 @@ public class ChatActivity extends AppCompatActivity {
                 Toast.makeText(ChatActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
 
                 //先保存来填记录到List里
-                ACache aCache = ACache.get(ChatActivity.this);
+
+                /**
                 ChatRecord chatRecord = new ChatRecord();
-                String sender_id = aCache.getAsString("userId");
                 chatRecord.setSenderId(sender_id);
                 chatRecord.setReceiverId(friendId.getText().toString());
                 chatRecord.setContent(mContent);
                 chatRecordList.add(chatRecord);
+                 **/
+
+                // 发送一条成功则保存一条
+                ACache aCache = ACache.get(ChatActivity.this);
+                String sender_id = aCache.getAsString("userId");
+                DBHelper dbHelper = new DBHelper(ChatActivity.this);
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                db.execSQL("insert into chat_record_of_friend(sender_id,receiver_id,content,content_type,build_time) " +
+                        "values(?,?,?,'TEXT',datetime('now'))",new Object[]{sender_id,friendId.getText().toString(),mContent});
+
+                db.close();
             }
 
             @Override
@@ -192,6 +206,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     public void goBackInfo(View view){
+        /**
         if (chatRecordList.isEmpty()){
             this.finish();
         }else{
@@ -211,5 +226,8 @@ public class ChatActivity extends AppCompatActivity {
             });
             this.finish();
         }
+         **/
+
+        this.finish();
     }
 }

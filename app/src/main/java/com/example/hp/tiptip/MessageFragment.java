@@ -46,24 +46,18 @@ import static com.netease.nimlib.sdk.media.player.AudioPlayer.TAG;
 public class MessageFragment extends Fragment {
     private RecyclerView recentContactListView;
 
-   /*Observer<List<IMMessage>> incomingMessageObserver =
+    Observer<List<IMMessage>> incomingMessageObserver =
             new Observer<List<IMMessage>>() {
                 @Override
                 public void onEvent(List<IMMessage> messages) {
                     // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
                     for (IMMessage message : messages){
                         if (message.getMsgType() == MsgTypeEnum.text){
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-
-
-                                }
-                            });
+                            setRecentContactList();
                         }
                     }
                 }
-            };*/
+            };
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -167,8 +161,8 @@ public class MessageFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         recentContactListView = getActivity().findViewById(R.id.recent_contact_list);
         setRecentContactList();
-
-
+        NIMClient.getService(MsgServiceObserve.class)
+                .observeReceiveMessage(incomingMessageObserver, true);
     }
 
     public void setRecentContactList(){
